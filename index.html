@@ -241,26 +241,7 @@
 
     //mobile
 
-    function mobile(){
-        const app = {
-            timeout: function(txt, dom){
-                let currentIndex = 0;
-                let charArr = txt.split('')
-                intervalMobile = setInterval(function(){
-                    if(currentIndex < charArr.length){
-                        dom.textContent += charArr[currentIndex];
-                        currentIndex++;
-                    }
-                    else{
-                        clearInterval(intervalMobile)
-                    }
-                },200)
-            }
-        }
-        return app
-    }
-    const fcMobile = mobile()
-    if(window.innerWidth < 768){
+  
         setTimeout(()=>{
             fcMobile.timeout("26", document.querySelector(".day"))
         },5000)
