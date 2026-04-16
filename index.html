@@ -1,703 +1,273 @@
+
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BAONAM TOOL</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        :root {
-            --bg-primary: #0f172a;
-            --bg-secondary: #1e293b;
-            --bg-card: #334155;
-            --accent: #3b82f6;
-            --accent-hover: #2563eb;
-            --text-primary: #f1f5f9;
-            --text-secondary: #cbd5e1;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --error: #ef4444;
-            --border: #475569;
-            --shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-            --radius: 12px;
-            --transition: all 0.3s ease;
-        }
-
-        body {
-            background: linear-gradient(135deg, var(--bg-primary), #1a1f2e);
-            color: var(--text-primary);
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        /* Header */
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid var(--accent);
-        }
-
-        .app-title {
-            font-size: 2.8rem;
-            font-weight: 800;
-            background: linear-gradient(90deg, var(--accent), #8b5cf6);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin-bottom: 10px;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-
-        .app-subtitle {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-        }
-
-        /* Card styling */
-        .card {
-            background: var(--bg-card);
-            border-radius: var(--radius);
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
-            transition: var(--transition);
-        }
-
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
-        }
-
-        .card-title {
-            font-size: 1.4rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: var(--accent);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .card-title i {
-            font-size: 1.6rem;
-        }
-
-        /* Input groups */
-        .input-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
-        .file-input-wrapper {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 14px 18px;
-            background: var(--bg-secondary);
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            color: var(--text-primary);
-            font-size: 1rem;
-            transition: var(--transition);
-        }
-
-        input[type="text"]:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-        }
-
-        /* Buttons */
-        .btn {
-            padding: 14px 28px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .btn-primary {
-            background: var(--accent);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: var(--accent-hover);
-            transform: translateY(-2px);
-        }
-
-        .btn-secondary {
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-            border: 1px solid var(--border);
-        }
-
-        .btn-secondary:hover {
-            background: #2d3748;
-        }
-
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none !important;
-        }
-
-        /* Progress bar */
-        .progress-container {
-            margin: 30px 0;
-            display: none;
-        }
-
-        .progress-info {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            color: var(--text-secondary);
-        }
-
-        .progress-bar {
-            height: 12px;
-            background: var(--bg-secondary);
-            border-radius: 6px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent), #8b5cf6);
-            width: 0%;
-            border-radius: 6px;
-            transition: width 0.3s ease;
-        }
-
-        /* Status messages */
-        .status-message {
-            padding: 15px;
-            border-radius: 8px;
-            margin: 20px 0;
-            display: none;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .status-success {
-            background: rgba(16, 185, 129, 0.1);
-            border: 1px solid var(--success);
-            color: var(--success);
-        }
-
-        .status-error {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid var(--error);
-            color: var(--error);
-        }
-
-        .status-warning {
-            background: rgba(245, 158, 11, 0.1);
-            border: 1px solid var(--warning);
-            color: var(--warning);
-        }
-
-        .status-icon {
-            font-size: 1.5rem;
-        }
-
-        /* Results section */
-        .results {
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .results-info {
-            background: var(--bg-secondary);
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-
-        .results-stats {
-            display: flex;
-            gap: 20px;
-            margin-top: 15px;
-        }
-
-        .stat {
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--accent);
-        }
-
-        .stat-label {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-
-        /* Loading animation */
-        .loading {
-            display: none;
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid var(--bg-secondary);
-            border-top: 4px solid var(--accent);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Footer */
-        .footer {
-            text-align: center;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border);
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .container {
-                padding: 10px;
-            }
-            
-            .app-title {
-                font-size: 2.2rem;
-            }
-            
-            .card {
-                padding: 20px;
-            }
-            
-            .btn {
-                width: 100%;
-                margin-bottom: 10px;
-            }
-            
-            .file-input-wrapper {
-                flex-direction: column;
-            }
-            
-            .results-stats {
-                flex-direction: column;
-                gap: 10px;
-            }
-        }
-    </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Happy birthday</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <header class="header">
-            <h1 class="app-title">bAOnAM tool</h1>
-            <p class="app-subtitle">Công cụ lọc và tìm kiếm từ khóa trong file text</p>
-        </header>
-
-        <!-- File Selection Card -->
-        <div class="card">
-            <h2 class="card-title">
-                <i class="fas fa-file-alt"></i>
-                1. Chọn file đầu vào (.txt)
-            </h2>
-            <div class="input-group">
-                <div class="file-input-wrapper">
-                    <input type="text" id="filePath" placeholder="Chưa chọn file..." readonly>
-                    <button class="btn btn-secondary" id="browseBtn">
-                        <i class="fas fa-folder-open"></i> Duyệt...
+    <div id="wrapper">
+        <div class="flag__birthday">
+            <img src="./images/1.png" alt="" width="350" class="flag__left">
+            <img src="./images/1.png" alt="" width="350" class="flag__right">
+        </div>
+        <div class="content">
+            <div class="left">
+                <div class="title">
+                    <h1 class="happy">
+                        <span style="--t: 4s;">H</span>
+                        <span style="--t: 4.2s;">a</span>
+                        <span style="--t: 4.4s;">p</span>
+                        <span style="--t: 4.6s;">p</span>
+                        <span style="--t: 4.8s;">
+                            y
+                            <div class="hat">
+                                <img src="./images/hat.png" alt="" width="130">
+                            </div>
+                        </span>
+                    </h1>
+                    <h1 class="birthday">
+                        <span style="--t: 5s;">B</span>
+                        <span style="--t: 5.2s;">i</span>
+                        <span style="--t: 5.4s;">r</span>
+                        <span style="--t: 5.6s;">t</span>
+                        <span style="--t: 5.8s;">h</span>
+                        <span style="--t: 6s;">d</span>
+                        <span style="--t: 6.2s;">a</span>
+                        <span style="--t: 6.4s;">y</span>
+                    </h1>
+                    <iframe src="https://r4---sn-8qj-nbos6.googlevideo.com/videoplayback?expire=1776381511&ei=5xnhacKmI8ym6dsPiKuBuQE&ip=80.187.122.29&id=o-AECbw6FlFEurIXS4PA8-xGouSwQ0ylFVVfUncpC40bvv&itag=251&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&rms=au%2Cau&bui=AUUZDGKpDMp7NgAQ_ez0MSXfE2wjALeVI8ozm7b5cMzIyx0xCEvuy5NvuXCW5aeegVYa5ZpsUMnFyA-x&spc=jlWavVBpVWIaXDDwjX2dOreg_QBzF5OlemL871K8X2d6&vprv=1&svpuc=1&mime=audio%2Fwebm&rqh=1&gir=yes&clen=4009626&dur=238.921&lmt=1733209405567819&keepalive=yes&fexp=51565116%2C51565681&c=ANDROID_VR&txp=4532434&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cbui%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Crqh%2Cgir%2Cclen%2Cdur%2Clmt&sig=AHEqNM4wRgIhAKQiWZDK-WGTwz6reLQSfeumQhwHOAicF-pIKjK-RgdIAiEA72T10F-Vva_MO4uakpz0SkBozOVV8d2csk8-MRXGpkY%3D&pot=Mt4EtDRRFrDq9cy0CktvboVT1V06e1N9U5cJSVtzZGSVEme1Zydsuc06HqDIL4od_7JV3kRixXX2DcSIp_e-o3CnpQ3TG7QaSujavX2ks23ciKoWEbq51DWE75t6hoy_kKRUMyV-zZG82A6zi7YvQyy4eknwlbm6SqDOu-tMuZuZIOkBq5oDJk7TFcWiii5O1KR7qasKf_eDyJFHAPRK6ar-tzsuiyD40bVphAzSdO2Oif4KAls-Wkamw0itn_kyccMbPcP8Qg17rZqToBMmezwTMHzggW1PPxGlMaCW-vAvhnKrHi6Tu88rBA0AMVRVO8dll7odju3xAAjQl_U_TY8Hi2EcS9FNgtWmx0WwY1bnkIRCI8lbGms0yu2nSVNfEGqYxksegUkZ7NHmDyPU72IoFXiNyaGynXZt0ZoJdTp_jZu9MxSrH8jCYYNPPQYRMdOylYwSzieQoQ2WFsJgJhYZ31LthBTiNKVrbVTFW1PB_7c1G4VZtJnXhejb2XzQe9UMVrgFrZT-df4SsD2k4s9M9bkaEu7QELbxaj2Tnj04qdWNG-nn0JSYqluSQLazUxM5wOeDLAdxJOtBmW-kNz4zdtAsoOpqHENMFuzKCcMvJoV8YT8K-1IKQ7q7n2G8ViOrKQh02Jl1rhzUiHhfylO20PVoJbWdemc1LJfgC5usnp29V5wLk_J6KlSwLOw-3HYkt0-jtUgL-1eJY10kwNweZo3kEQYBAXFARDiWEqeDBFz9zzum0O1uAYLtdvARirWznpdPieE2lev9GJXLXjsoWrT0om-XT7YrclZ2nIuI&timestamp=1776359861091&cms_redirect=yes&cps=191&met=1776359916,&mh=RU&mip=113.188.24.188&mm=31&mn=sn-8qj-nbos6&ms=au&mt=1776359378&mv=m&mvi=4&pl=23&lsparams=cps,met,mh,mip,mm,mn,ms,mv,mvi,pl,rms&lsig=APaTxxMwRQIhAJ7Z5dQ3rG3YZUaZIVx_l9PQxzlY-T5x7xx6RztMqRTdAiAyvxEj7Ov2ZYoo0L5t5dPj0nT3cN4eMWiz7YUz4OJi4Q%3D%3D" 
+        width="0" height="0" 
+        frameborder="0" allow="autoplay">
+</iframe>
+                </div>
+                <div class="date__of__birth">
+                    <span></span>
+                </div>
+                <div class="btn">
+                    <button id="btn__letter">
+                        Nhận thư nè
+                        <i class="fa-regular fa-envelope"></i>
                     </button>
                 </div>
-                <small style="color: var(--text-secondary); margin-top: 8px; display: block;">
-                    Chỉ hỗ trợ file .txt với encoding UTF-8
-                </small>
             </div>
-        </div>
-
-        <!-- Keyword Input Card -->
-        <div class="card">
-            <h2 class="card-title">
-                <i class="fas fa-search"></i>
-                2. Nhập từ khóa cần tìm
-            </h2>
-            <div class="input-group">
-                <input type="text" id="keyword" 
-                       placeholder="Nhập từ khóa (không phân biệt hoa thường)...">
-                <small style="color: var(--text-secondary); margin-top: 8px; display: block;">
-                    Tìm kiếm không phân biệt chữ hoa/thường
-                </small>
-            </div>
-        </div>
-
-        <!-- Find Button -->
-        <div style="text-align: center; margin: 30px 0;">
-            <button class="btn btn-primary" id="findBtn">
-                <i class="fas fa-search"></i> FIND
-            </button>
-        </div>
-
-        <!-- Progress Bar -->
-        <div class="progress-container" id="progressContainer">
-            <div class="progress-info">
-                <span id="progressText">Đang xử lý...</span>
-                <span id="progressPercent">0%</span>
-            </div>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
-            </div>
-        </div>
-
-        <!-- Loading Animation -->
-        <div class="loading" id="loading">
-            <div class="spinner"></div>
-            <p>Đang xử lý file, vui lòng chờ...</p>
-        </div>
-
-        <!-- Status Messages -->
-        <div class="status-message" id="successMessage">
-            <i class="fas fa-check-circle status-icon"></i>
-            <div>
-                <strong>Thành công!</strong>
-                <p id="successText">Đã tạo file output.txt thành công.</p>
-            </div>
-        </div>
-
-        <div class="status-message" id="errorMessage">
-            <i class="fas fa-exclamation-circle status-icon"></i>
-            <div>
-                <strong>Có lỗi xảy ra!</strong>
-                <p id="errorText">Vui lòng kiểm tra lại thông tin.</p>
-            </div>
-        </div>
-
-        <!-- Results Section -->
-        <div class="results" id="resultsSection">
-            <div class="card">
-                <h2 class="card-title">
-                    <i class="fas fa-check-circle"></i>
-                    Kết quả
-                </h2>
-                
-                <div class="results-info">
-                    <p>Quá trình tìm kiếm đã hoàn tất. File kết quả đã được tạo.</p>
+            <div class="right">
+                <div class="box__account">
+                    <div class="image"><img data-visualcompletion="media-vc-image" class="x15mokao x1ga7v0g x16uus16 xbiv7yw x1bwycvy x193iq5w x4fas0m x19kjcj4" alt="Không có mô tả ảnh." referrerpolicy="origin-when-cross-origin" src="https://scontent.fvca5-1.fna.fbcdn.net/v/t39.30808-6/476950483_1010246004302112_2306511645878017769_n.jpg?_nc_cat=102&amp;ccb=1-7&amp;_nc_sid=53a332&amp;_nc_ohc=zRe702qm0AwQ7kNvwHFruC6&amp;_nc_oc=Adp2tH97S-LoazYs0dNxQU99Wo49rkIh8_XdpFfTde1H9IJhxynjbiIx3tFt_tmh15A&amp;_nc_zt=23&amp;_nc_ht=scontent.fvca5-1.fna&amp;_nc_gid=BNggWRhaWlyOPzVxht6hTA&amp;_nc_ss=7a3a8&amp;oh=00_Af2sTc_jA5hgTGlPoJg3VwcTfzPOXBnpWCF8g2IDRc8_Ew&amp;oe=69E6E490">ttps://www.facebook.com/photo.php?fbid=1010246000968779&set=pb.100059501645005.-2207520000&type=3&locale=vi_VN
+                    </div>
+                    <div class="name">
+                        <i class="fa-solid fa-heart"></i>
+                        <span> Kim Ngân </span>
+                        <i class="fa-solid fa-heart"></i>
+                    </div>
+                    <div class="balloon_one">
+                        <img width="100px" src="./images/balloon1.png" alt="">
+                    </div>
+                    <div class="balloon_two">
+                        <img width="100px" src="./images/balloon2.png" alt="">
+                    </div>
+                </div>
+                <div class="cricle">
+                    <div class="text__cricle">
+                        <span style="--i: 1;">h</span>
+                        <span style="--i: 2;">a</span>
+                        <span style="--i: 3;">p</span>
+                        <span style="--i: 4;">p</span>
+                        <span style="--i: 5;">y</span>
+                        <span style="--i: 6;">-</span>
+                        <span style="--i: 7;">b</span>
+                        <span style="--i: 8;">i</span>
+                        <span style="--i: 9;">r</span>
+                        <span style="--i: 10;">t</span>
+                        <span style="--i: 11;">h</span>
+                        <span style="--i: 12;">d</span>
+                        <span style="--i: 13;">a</span>
+                        <span style="--i: 14;">y</span>
+                        <span style="--i: 15;">-</span>
+                    </div>
+                    <i class="fa-solid fa-heart"></i>
+                </div>
+                <span class="day">
                     
-                    <div class="results-stats">
-                        <div class="stat">
-                            <div class="stat-value" id="totalLines">0</div>
-                            <div class="stat-label">Dòng đã xử lý</div>
+                </span>
+                <span class="month"></span>
+            </div>
+        </div>
+        <div class="decorate_star star1" style="--t: 15s;"></div>
+        <div class="decorate_star star2" style="--t: 15.2s;"></div>
+        <div class="decorate_star star3" style="--t: 15.4s;"></div>
+        <div class="decorate_star star4" style="--t: 15.6s;"></div>
+        <div class="decorate_star star5" style="--t: 15.8s;"></div>
+        <div class="decorate_flower--one" style="--t: 15s;">
+            <img width="20" src="./images/decorate_flower.png" alt="">
+        </div>
+        <div class="decorate_flower--two" style="--t: 15.3s;">
+            <img width="20" src="./images/decorate_flower.png" alt="">
+        </div>
+        <div class="decorate_flower--three" style="--t: 15.6s;">
+            <img width="20" src="./images/decorate_flower.png" alt="">
+        </div>
+        <div class="decorate_bottom">
+            <img src="./images/decorate.png" alt="" width="100">
+        </div>
+        <div class="smiley__icon">
+            <img src="./images/smiley_icon.png" alt="" width="100">
+        </div>
+
+        
+
+        <div class="box__letter">
+            <div class="letter__border">
+                <div class="letter">
+                    <div class="title__letter">
+                    </div>
+                    <div class="content__letter">
+                        <div class="left">
+                            <img id="heart__letter" src="./images/heart_letter.png" alt="">
+                            <img class="heart heart_1" style="--t: 0.2s" width="20" src="./images/heart.png" alt="">
+                            <img class="heart heart_2" style="--t: 0.4s" width="20" src="./images/heart.png" alt="">
+                            <img class="heart heart_3" style="--t: 0.6s" width="20" src="./images/heart.png" alt="">
+                            <img class="heart heart_4" style="--t: 0.8s" width="20" src="./images/heart.png" alt="">
                         </div>
-                        <div class="stat">
-                            <div class="stat-value" id="matchedLines">0</div>
-                            <div class="stat-label">Dòng khớp</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-value" id="fileSize">0 KB</div>
-                            <div class="stat-label">Kích thước</div>
+                        <div class="right">
+                            <div class="love__img">
+                                <img src="./images/love.png" alt="" width="220">
+                            </div>
+                            <div class="text__letter">
+                                 <p></p>
+                            </div>
+                            <img id="mewmew" width="80" src="./images/mewmew.gif" alt="">
                         </div>
                     </div>
                 </div>
-                
-                <div style="display: flex; gap: 10px; margin-top: 20px;">
-                    <button class="btn btn-secondary" id="openFolderBtn">
-                        <i class="fas fa-folder-open"></i> Mở thư mục
-                    </button>
-                    <button class="btn btn-primary" id="downloadBtn">
-                        <i class="fas fa-download"></i> Tải file output.txt
-                    </button>
+                <div class="close">
+                    <i class="fa-solid fa-xmark"></i>
                 </div>
             </div>
         </div>
-
-        <!-- Footer -->
-        <footer class="footer">
-            <p>BaoNam tool &copy; 2025 - Công cụ xử lý văn bản chuyên nghiệp</p>
-            <p>Phiên bản: 1.0.0 | Hỗ trợ Unicode UTF-8</p>
-        </footer>
     </div>
-
-    <script>
-        // DOM Elements
-        const filePathInput = document.getElementById('filePath');
-        const browseBtn = document.getElementById('browseBtn');
-        const keywordInput = document.getElementById('keyword');
-        const findBtn = document.getElementById('findBtn');
-        const progressContainer = document.getElementById('progressContainer');
-        const progressFill = document.getElementById('progressFill');
-        const progressPercent = document.getElementById('progressPercent');
-        const progressText = document.getElementById('progressText');
-        const loading = document.getElementById('loading');
-        const successMessage = document.getElementById('successMessage');
-        const errorMessage = document.getElementById('errorMessage');
-        const successText = document.getElementById('successText');
-        const errorText = document.getElementById('errorText');
-        const resultsSection = document.getElementById('resultsSection');
-        const totalLinesSpan = document.getElementById('totalLines');
-        const matchedLinesSpan = document.getElementById('matchedLines');
-        const fileSizeSpan = document.getElementById('fileSize');
-        const openFolderBtn = document.getElementById('openFolderBtn');
-        const downloadBtn = document.getElementById('downloadBtn');
-
-        // File handling variables
-        let selectedFile = null;
-        let outputContent = '';
-
-        // Browse button click handler
-        browseBtn.addEventListener('click', () => {
-            // Tạo input file ẩn
-            const fileInput = document.createElement('input');
-            fileInput.type = 'file';
-            fileInput.accept = '.txt,text/plain';
-            
-            fileInput.onchange = (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    // Kiểm tra định dạng file
-                    if (!file.name.toLowerCase().endsWith('.txt')) {
-                        showError('Vui lòng chọn file .txt');
-                        return;
-                    }
-                    
-                    selectedFile = file;
-                    filePathInput.value = file.name;
-                    
-                    // Reset UI
-                    resetUI();
-                }
-            };
-            
-            fileInput.click();
-        });
-
-        // Find button click handler
-        findBtn.addEventListener('click', async () => {
-            // Validate inputs
-            if (!selectedFile) {
-                showError('Vui lòng chọn file đầu vào!');
-                return;
-            }
-            
-            const keyword = keywordInput.value.trim();
-            if (!keyword) {
-                showError('Vui lòng nhập từ khóa tìm kiếm!');
-                return;
-            }
-            
-            // Reset UI and show progress
-            resetUI();
-            showProgress(true);
-            findBtn.disabled = true;
-            
-            try {
-                // Đọc file
-                const text = await selectedFile.text();
-                const lines = text.split('\n');
-                const totalLines = lines.length;
-                
-                // Cập nhật số dòng
-                totalLinesSpan.textContent = totalLines.toLocaleString();
-                
-                // Tìm kiếm từng dòng
-                let matchedCount = 0;
-                outputContent = '';
-                
-                for (let i = 0; i < lines.length; i++) {
-                    const line = lines[i];
-                    
-                    // Kiểm tra từ khóa (không phân biệt hoa thường)
-                    if (line.toLowerCase().includes(keyword.toLowerCase())) {
-                        outputContent += line + '\n';
-                        matchedCount++;
-                    }
-                    
-                    // Cập nhật tiến trình mỗi 100 dòng
-                    if (i % 100 === 0 || i === lines.length - 1) {
-                        const percent = Math.round((i + 1) / lines.length * 100);
-                        updateProgress(percent, `Đang xử lý dòng ${i + 1}/${lines.length}`);
-                        
-                        // Tạm dừng để không block UI
-                        await sleep(0);
-                    }
-                }
-                
-                // Cập nhật kết quả
-                matchedLinesSpan.textContent = matchedCount.toLocaleString();
-                
-                // Tính kích thước file
-                const fileSize = new Blob([outputContent]).size;
-                const fileSizeKB = (fileSize / 1024).toFixed(2);
-                fileSizeSpan.textContent = `${fileSizeKB} KB`;
-                
-                // Tạo file output
-                const outputBlob = new Blob([outputContent], { type: 'text/plain;charset=utf-8' });
-                const outputUrl = URL.createObjectURL(outputBlob);
-                
-                // Thiết lập nút tải về
-                downloadBtn.onclick = () => {
-                    const a = document.createElement('a');
-                    a.href = outputUrl;
-                    a.download = 'output.txt';
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                };
-                
-                // Hoàn tất
-                showProgress(false);
-                showSuccess(`Tìm thấy ${matchedCount} dòng chứa từ khóa "${keyword}"`);
-                resultsSection.style.display = 'block';
-                
-                // Tự động cuộn đến kết quả
-                resultsSection.scrollIntoView({ behavior: 'smooth' });
-                
-            } catch (error) {
-                console.error('Error:', error);
-                showError('Không thể đọc file. Vui lòng kiểm tra encoding (UTF-8)');
-            } finally {
-                findBtn.disabled = false;
-            }
-        });
-
-        // Open folder button handler
-        openFolderBtn.addEventListener('click', () => {
-            // Trong trình duyệt web, không thể mở thư mục trực tiếp
-            // Chúng ta sẽ tạo và tải file output.txt
-            const blob = new Blob([outputContent], { type: 'text/plain;charset=utf-8' });
-            const url = URL.createObjectURL(blob);
-            
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'output.txt';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            
-            // Giải phóng URL
-            setTimeout(() => URL.revokeObjectURL(url), 100);
-        });
-
-        // Helper functions
-        function showProgress(show) {
-            if (show) {
-                progressContainer.style.display = 'block';
-                loading.style.display = 'block';
-                successMessage.style.display = 'none';
-                errorMessage.style.display = 'none';
-            } else {
-                loading.style.display = 'none';
-            }
-        }
-
-        function updateProgress(percent, text) {
-            progressFill.style.width = `${percent}%`;
-            progressPercent.textContent = `${percent}%`;
-            if (text) progressText.textContent = text;
-        }
-
-        function showSuccess(message) {
-            successText.textContent = message;
-            successMessage.style.display = 'flex';
-            errorMessage.style.display = 'none';
-            
-            // Tự động ẩn sau 5 giây
-            setTimeout(() => {
-                successMessage.style.display = 'none';
-            }, 5000);
-        }
-
-        function showError(message) {
-            errorText.textContent = message;
-            errorMessage.style.display = 'flex';
-            successMessage.style.display = 'none';
-            findBtn.disabled = false;
-            
-            // Tự động ẩn sau 5 giây
-            setTimeout(() => {
-                errorMessage.style.display = 'none';
-            }, 5000);
-        }
-
-        function resetUI() {
-            progressContainer.style.display = 'none';
-            progressFill.style.width = '0%';
-            progressPercent.textContent = '0%';
-            successMessage.style.display = 'none';
-            errorMessage.style.display = 'none';
-            resultsSection.style.display = 'none';
-            loading.style.display = 'none';
-        }
-
-        function sleep(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
-        }
-
-        // Thêm hiệu ứng cho input khi focus
-        keywordInput.addEventListener('focus', function() {
-            this.parentElement.style.transform = 'translateY(-2px)';
-        });
-
-        keywordInput.addEventListener('blur', function() {
-            this.parentElement.style.transform = 'translateY(0)';
-        });
-
-        // Cho phép nhấn Enter để tìm kiếm
-        keywordInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                findBtn.click();
-            }
-        });
-
-        // Khởi tạo
-        resetUI();
-        
-        console.log('BAONAM TOOL đã sẵn sàng!');
-    </script>
 </body>
+<script>
+    let datetxt = "17/04/2008";
+    let datatxtletter = "Chúc mừng sinh nhật Kim Ngân. Chúc những dự định tương lai ấp ủ sẽ thành sự thật. Thành công trên con đường mà Kim Ngân đã chọn. Dù tui có hơi 'nước lọc' một tí – không quá ngọt ngào, không quá nổi bật – thì tui vẫn muốn gửi đến điều chân thành nhất: hạnh phúc và luôn nở nụ cười trên môi nhé, Kim Ngân! 🎂✨";
+    let titleLetter = "Happy Birthday";
+    let charArrDate = datetxt.split('');
+    let charArrDateLetter = datatxtletter.split('');
+    let charArrTitle = titleLetter.split('');
+    let currentIndex = 0;
+    let currentIndexLetter = 0;
+    let currentIndexTitle = 0;
+    let date__of__birth = document.querySelector(".date__of__birth span");
+    let text__letter = document.querySelector(".text__letter p");
+    setTimeout(function(){
+        timeDatetxt = setInterval(function(){
+            if(currentIndex < charArrDate.length){
+                date__of__birth.textContent += charArrDate[currentIndex];
+                currentIndex++;
+            }
+            else{
+                let i = document.createElement("i");
+                i.className = "fa-solid fa-star"
+                document.querySelector(".date__of__birth").prepend(i)
+                document.querySelector(".date__of__birth").appendChild(i.cloneNode(true))
+                clearInterval(timeDatetxt)
+            }
+        },100)
+    },12000)
+
+    var intervalContent;
+    var intervalTitle;
+    $("#btn__letter").on("click", function(){
+        $(".box__letter").slideDown()
+        setTimeout(function(){
+            $(".letter__border").slideDown();
+        },1000)
+        setTimeout(function(){
+            intervalTitle = setInterval(function(){
+                if(currentIndexTitle < charArrTitle.length){
+                    document.querySelector(".title__letter").textContent += charArrTitle[currentIndexTitle];
+                    let i = document.createElement("i");
+                    i.className = "fa-solid fa-heart"
+                    document.querySelector(".title__letter").appendChild(i)
+                    currentIndexTitle++
+                }
+                else{
+                    clearInterval(intervalTitle)
+                }
+            },100)
+        },2000)
+        setTimeout(function(){
+            document.querySelector("#heart__letter").classList.add("animationOp");
+            document.querySelector(".love__img").classList.add("animationOp");
+            document.querySelector("#mewmew").classList.add("animationOp");
+        },2800)
+        setTimeout(function(){
+            document.querySelectorAll(".heart").forEach((item)=>{
+                item.classList.add("animation")
+            })
+        },3500)
+        setTimeout(function(){
+            intervalContent = setInterval(function(){
+                if(currentIndexLetter < charArrDateLetter.length){
+                    text__letter.textContent += charArrDateLetter[currentIndexLetter];
+                    currentIndexLetter++;
+                }
+                else{
+                    clearInterval(intervalContent)
+                }
+            },50)
+        },6000)
+    })
+    $(".close").on("click", function(){
+        clearInterval(intervalContent)
+        document.querySelector(".title__letter").textContent = "";
+        text__letter.textContent = "";
+        currentIndexLetter = 0
+        currentIndexTitle = 0
+        document.querySelector("#heart__letter").classList.remove("animationOp");
+        document.querySelector(".love__img").classList.remove("animationOp");
+        document.querySelector("#mewmew").classList.remove("animationOp");
+        document.querySelectorAll(".heart").forEach((item)=>{
+                item.classList.remove("animation")
+            })
+        $(".box__letter").slideUp();
+        $(".letter__border").slideUp();
+    })
+
+
+    //mobile
+
+    function mobile(){
+        const app = {
+            timeout: function(txt, dom){
+                let currentIndex = 0;
+                let charArr = txt.split('')
+                intervalMobile = setInterval(function(){
+                    if(currentIndex < charArr.length){
+                        dom.textContent += charArr[currentIndex];
+                        currentIndex++;
+                    }
+                    else{
+                        clearInterval(intervalMobile)
+                    }
+                },200)
+            }
+        }
+        return app
+    }
+    const fcMobile = mobile()
+    if(window.innerWidth < 768){
+        setTimeout(()=>{
+            fcMobile.timeout("26", document.querySelector(".day"))
+        },5000)
+        setTimeout(()=>{
+            fcMobile.timeout("10", document.querySelector(".month"))
+        },6000)
+    }
+    
+</script>
 </html>
